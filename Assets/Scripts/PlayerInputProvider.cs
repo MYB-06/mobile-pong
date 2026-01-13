@@ -17,10 +17,6 @@ namespace PongGame.Input
             _inputActions.Player.Move.performed += OnMovePerformed;
             _inputActions.Player.Move.canceled += OnMoveCanceled;
         }
-        private void Update()
-        {
-            Debug.Log($"Input: {GetHorizontalInput()}");
-        }
 
         public float GetHorizontalInput()
         {
