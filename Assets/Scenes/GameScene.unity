@@ -469,6 +469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Ball
   initialSpeed: 2
   speedIncrease: 0.1
+  maxSpeed: 13
 --- !u!58 &1401072461
 CircleCollider2D:
   m_ObjectHideFlags: 0

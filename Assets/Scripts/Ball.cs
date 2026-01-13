@@ -8,6 +8,10 @@ namespace PongGame.Gameplay
         [Header("Movement")]
         [SerializeField] private float initialSpeed;
         [SerializeField] private float speedIncrease;
+        [SerializeField] private float maxSpeed;
+
+        [Header("Deadlock Prevention")]
+        [SerializeField] private float minBounceAngle = 30f;
 
         private Rigidbody2D _rigidbody2D;
         private float _currentSpeed;
@@ -39,7 +43,7 @@ namespace PongGame.Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            _currentSpeed += speedIncrease;   
+            _currentSpeed = Mathf.Clamp(_currentSpeed + speedIncrease, initialSpeed, maxSpeed);
 
             PreventDeadlock();
         }
@@ -47,13 +51,13 @@ namespace PongGame.Gameplay
         private void PreventDeadlock()
         {
             Vector2 velocity = _rigidbody2D.linearVelocity;
-            float minAngle = 30f;
+            float minRadians = minBounceAngle * Mathf.Deg2Rad;
 
-            if(Mathf.Abs(velocity.y) < _currentSpeed * Mathf.Sin(minAngle * Mathf.Deg2Rad))
+            if(Mathf.Abs(velocity.y) < _currentSpeed * Mathf.Sin(minRadians))
             {
                 float sign = velocity.y >= 0 ? 1f : -1f;
-                velocity.y = sign * _currentSpeed * Mathf.Sin(minAngle * Mathf.Deg2Rad);
-                velocity.x = Mathf.Sign(velocity.x) * _currentSpeed * Mathf.Cos(minAngle * Mathf.Deg2Rad);
+                velocity.y = sign * _currentSpeed * Mathf.Sin(minRadians);
+                velocity.x = Mathf.Sign(velocity.x) * _currentSpeed * Mathf.Cos(minRadians);
 
                 _rigidbody2D.linearVelocity = velocity;
             }
