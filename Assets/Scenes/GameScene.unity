@@ -653,8 +653,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Paddle
   speed: 5
-  minX: -2
-  maxX: 2
+  minX: -2.2
+  maxX: 2.2
 --- !u!61 &1755292425
 BoxCollider2D:
   m_ObjectHideFlags: 0
