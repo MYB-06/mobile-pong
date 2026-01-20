@@ -58,9 +58,14 @@ namespace PongGame.Gameplay
         {
             ContactPoint2D contact = collision.GetContact(0);
     
-            float paddleHeight = GetComponent<BoxCollider2D>().bounds.size.y;
-            float hitOffset = contact.point.y - transform.position.y;
+            Bounds paddleBounds = GetComponent<BoxCollider2D>().bounds;
+            float paddleHeight = paddleBounds.size.y;
+            float paddleMinY = paddleBounds.min.y;
+            float paddleMaxY = paddleBounds.max.y;
     
+            float contactY = Mathf.Clamp(contact.point.y, paddleMinY, paddleMaxY);
+            float hitOffset = contactY - transform.position.y;
+
             float normalizedHit = hitOffset / (paddleHeight / 2f);
             normalizedHit = Mathf.Clamp(normalizedHit, -1f, 1f);
     
@@ -68,9 +73,10 @@ namespace PongGame.Gameplay
             float angleInRadians = bounceAngle * Mathf.Deg2Rad;
             Vector2 direction = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
     
-            direction.x = contact.normal.x > 0 ? Mathf.Abs(direction.x) : -Mathf.Abs(direction.x);
-    
             Rigidbody2D ballRb = ball.GetComponent<Rigidbody2D>();
+            float ballIncomingDirectionX = ballRb.linearVelocity.x;
+            direction.x = ballIncomingDirectionX > 0 ? -Mathf.Abs(direction.x) : Mathf.Abs(direction.x);
+    
             float ballSpeed = ballRb.linearVelocity.magnitude;
             ballRb.linearVelocity = direction.normalized * ballSpeed;
         }
