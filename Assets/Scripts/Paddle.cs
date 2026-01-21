@@ -12,6 +12,7 @@ namespace PongGame.Gameplay
         [Header("Boundaries")]
         [SerializeField] private float minX = -2f;
         [SerializeField] private float maxX = 2f;
+        [SerializeField] private float threshold = 0.05f;
         [Header("Bounce Settings")]
         [SerializeField] private float maxBounceAngle;
         private Rigidbody2D _rigidbody2D;
@@ -37,17 +38,14 @@ namespace PongGame.Gameplay
         private void Move()
         {
             float input = _inputProvider.GetHorizontalInput();
+            
+            if((transform.position.x <= minX + threshold && input < 0) || (transform.position.x) >= maxX - threshold && input > 0)
+            {
+                input = 0;
+            }
 
-            _rigidbody2D.linearVelocity = new Vector2(input * speed, 0f);
-
-            ClampPosition();
-        }
-        private void ClampPosition()
-        {
-            Vector3 pos = transform.position;
-            pos.x = Mathf.Clamp(pos.x, minX, maxX);
-            transform.position = pos;
-        }
+            _rigidbody2D.linearVelocity = new Vector2(input * speed, 0f);           
+        }  
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
