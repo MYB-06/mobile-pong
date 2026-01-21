@@ -39,7 +39,7 @@ namespace PongGame.Gameplay
         {
             float input = _inputProvider.GetHorizontalInput();
             
-            if((transform.position.x <= minX + threshold && input < 0) || (transform.position.x) >= maxX - threshold && input > 0)
+            if((transform.position.x <= minX + threshold && input < 0) || (transform.position.x >= maxX - threshold && input > 0))
             {
                 input = 0;
             }

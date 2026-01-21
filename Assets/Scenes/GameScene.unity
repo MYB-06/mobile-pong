@@ -443,9 +443,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Input.AIInputProvider
   ballTransform: {fileID: 1401072458}
   reactionSpeed: 1
-  errorMargin: 0
+  errorMargin: 1
   smoothSpeed: 5
   usePrediction: 1
+  leftWall: -2.8
+  rightWall: 2.8
 --- !u!50 &782711734
 Rigidbody2D:
   serializedVersion: 5
@@ -488,6 +490,7 @@ MonoBehaviour:
   speed: 5
   minX: -2.2
   maxX: 2.2
+  threshold: 0.05
   maxBounceAngle: 90
 --- !u!61 &782711736
 BoxCollider2D:
@@ -858,6 +861,7 @@ MonoBehaviour:
   speed: 5
   minX: -2.2
   maxX: 2.2
+  threshold: 0.05
   maxBounceAngle: 0
 --- !u!61 &1755292425
 BoxCollider2D:
