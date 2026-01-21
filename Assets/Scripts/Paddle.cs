@@ -15,6 +15,7 @@ namespace PongGame.Gameplay
         [SerializeField] private float threshold = 0.05f;
         [Header("Bounce Settings")]
         [SerializeField] private float maxBounceAngle;
+        [SerializeField] private float momentumTransfer = 1f;
         private Rigidbody2D _rigidbody2D;
         private BoxCollider2D _boxCollider;
         private IInputProvider _inputProvider;
@@ -69,13 +70,13 @@ namespace PongGame.Gameplay
 
             Vector2 newDirection = new Vector2(Mathf.Sin(bounceAngle), ballDirection * Mathf.Cos(bounceAngle)).normalized;
 
-            float paddleMomentum = _rigidbody2D.linearVelocity.x * 1f;
-            float currentSpeed = ball.ballRigidbody.linearVelocity.magnitude;
+            float paddleMomentum = _rigidbody2D.linearVelocity.x * momentumTransfer;
+            float currentSpeed = ball.Rigidbody.linearVelocity.magnitude;
 
             Vector2 finalVelocity = newDirection * currentSpeed;
             finalVelocity.x += paddleMomentum;
 
-            ball.ballRigidbody.linearVelocity = finalVelocity.normalized * currentSpeed;
+            ball.Rigidbody.linearVelocity = finalVelocity.normalized * currentSpeed;
         }
     }
 }

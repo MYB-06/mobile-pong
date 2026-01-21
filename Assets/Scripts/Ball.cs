@@ -63,6 +63,6 @@ namespace PongGame.Gameplay
             }
         }
         
-        public Rigidbody2D ballRigidbody => _rigidbody2D;
+        public Rigidbody2D Rigidbody => _rigidbody2D;
     }
 }

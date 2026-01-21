@@ -7,7 +7,7 @@ namespace PongGame.Input
 {
     public class PlayerInputProvider : MonoBehaviour, IInputProvider
     {
-        [SerializeField] private float touchSensivity;
+        [SerializeField] private float touchSensitivity;
         private PlayerInputActions _inputActions;
         private Vector2 _moveInput;
 
@@ -25,7 +25,7 @@ namespace PongGame.Input
         private void OnMovePerformed(InputAction.CallbackContext ctx)
         {
             Vector2 rawInput = ctx.ReadValue<Vector2>();
-            _moveInput.x = Mathf.Clamp(rawInput.x * touchSensivity, -1f, 1f);
+            _moveInput.x = Mathf.Clamp(rawInput.x * touchSensitivity, -1f, 1f);
         }
         private void OnMoveCanceled(InputAction.CallbackContext ctx)
         {
