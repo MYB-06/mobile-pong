@@ -1,3 +1,4 @@
+using PongGame.Gameplay;
 using UnityEngine;
 
 namespace PongGame.Input
@@ -7,7 +8,7 @@ namespace PongGame.Input
         [Header("AI Settings")]
         [SerializeField] private Transform ballTransform;
         [SerializeField] private float reactionSpeed;
-        [SerializeField] private float errorMargin;
+        [SerializeField] private float reactionDelay;
         [SerializeField] private float smoothSpeed;
         [SerializeField] private bool usePrediction = true;
 
@@ -15,15 +16,33 @@ namespace PongGame.Input
         [SerializeField] private float leftWall;
         [SerializeField] private float rightWall;
 
+        private Rigidbody2D _ballRigidbody;
+
         private float _targetX;
         private float _currentInput;
+        private Vector2 _delayedBallPos;
+        private Vector2 _delayedBallVel;
+        private float _delayTimer;
 
+        private void Awake()
+        {
+            if(ballTransform != null) _ballRigidbody = ballTransform.GetComponent<Rigidbody2D>();     
+        }
+        private void Start()
+        {
+            if (ballTransform != null && _ballRigidbody != null)
+            {
+                _delayedBallPos = ballTransform.position;
+                _delayedBallVel = _ballRigidbody.linearVelocity;
+            }
+        }
         private void Update()
         {
             if (ballTransform == null) return;
 
+            UpdateDelayedBallData();
             CalculateTargetPosition();
-            SmoothInput();
+            SmoothInput();          
         }
         public float GetHorizontalInput()
         {
@@ -54,10 +73,8 @@ namespace PongGame.Input
         {
             if (ballTransform == null) return;
 
-            Vector2 ballPos = ballTransform.position;
-
-            Rigidbody2D ballRigidbody = ballTransform.GetComponent<Rigidbody2D>();
-            Vector2 ballVelocity = ballRigidbody.linearVelocity;
+            Vector2 ballPos = _delayedBallPos;
+            Vector2 ballVelocity = _delayedBallVel;
 
             float predictedX;
 
@@ -80,9 +97,8 @@ namespace PongGame.Input
             {
                 predictedX = ballPos.x;
             }
-
-            float randomError = Random.Range(-errorMargin, errorMargin);
-            _targetX = predictedX + randomError;
+      
+            _targetX = predictedX;
         }
         private float PredictBallPositionWithBounce(Vector2 ballPos, Vector2 ballVel)
         {
@@ -111,6 +127,18 @@ namespace PongGame.Input
                 currentPos = hitPoint;
             }
             return ballPos.x;
+        }
+        private void UpdateDelayedBallData()
+        {
+            _delayTimer += Time.deltaTime;
+
+            if(_delayTimer >= reactionDelay)
+            {
+                _delayedBallPos = ballTransform.position;
+                _delayedBallVel = _ballRigidbody.linearVelocity;
+
+                _delayTimer = 0f;
+            }
         }
     }
 }

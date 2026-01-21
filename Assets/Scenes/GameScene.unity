@@ -443,8 +443,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Input.AIInputProvider
   ballTransform: {fileID: 1401072458}
   reactionSpeed: 1
-  errorMargin: 1
-  smoothSpeed: 5
+  reactionDelay: 0.2
+  smoothSpeed: 8
   usePrediction: 1
   leftWall: -2.8
   rightWall: 2.8
@@ -487,7 +487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62797572e66f9f140965d44168b959ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Paddle
-  speed: 5
+  speed: 6
   minX: -2.2
   maxX: 2.2
   threshold: 0.05
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1cecfb0a8507149abbde678e14911c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Ball
-  initialSpeed: 2.5
+  initialSpeed: 3
   speedIncrease: 0.1
   maxSpeed: 13
   minBounceAngle: 40
@@ -858,7 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62797572e66f9f140965d44168b959ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Paddle
-  speed: 5
+  speed: 6
   minX: -2.2
   maxX: 2.2
   threshold: 0.05
