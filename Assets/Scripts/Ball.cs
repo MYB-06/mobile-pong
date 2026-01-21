@@ -62,5 +62,7 @@ namespace PongGame.Gameplay
                 _rigidbody2D.linearVelocity = velocity;
             }
         }
+        
+        public Rigidbody2D ballRigidbody => _rigidbody2D;
     }
 }

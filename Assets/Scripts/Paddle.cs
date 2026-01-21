@@ -72,13 +72,12 @@ namespace PongGame.Gameplay
             Vector2 newDirection = new Vector2(Mathf.Sin(bounceAngle), ballDirection * Mathf.Cos(bounceAngle)).normalized;
 
             float paddleMomentum = _rigidbody2D.linearVelocity.x * 1f;
-            Rigidbody2D ballRigidbody = ball.GetComponent<Rigidbody2D>();
-            float currentSpeed = ballRigidbody.linearVelocity.magnitude;
+            float currentSpeed = ball.ballRigidbody.linearVelocity.magnitude;
 
             Vector2 finalVelocity = newDirection * currentSpeed;
             finalVelocity.x += paddleMomentum;
 
-            ballRigidbody.linearVelocity = finalVelocity.normalized * currentSpeed;
+            ball.ballRigidbody.linearVelocity = finalVelocity.normalized * currentSpeed;
         }
     }
 }
