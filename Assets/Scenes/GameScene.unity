@@ -488,7 +488,7 @@ MonoBehaviour:
   speed: 5
   minX: -2.2
   maxX: 2.2
-  maxBounceAngle: 45
+  maxBounceAngle: 90
 --- !u!61 &782711736
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -668,7 +668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1cecfb0a8507149abbde678e14911c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Ball
-  initialSpeed: 2
+  initialSpeed: 2.5
   speedIncrease: 0.1
   maxSpeed: 13
   minBounceAngle: 40
@@ -858,7 +858,7 @@ MonoBehaviour:
   speed: 5
   minX: -2.2
   maxX: 2.2
-  maxBounceAngle: 45
+  maxBounceAngle: 90
 --- !u!61 &1755292425
 BoxCollider2D:
   m_ObjectHideFlags: 0

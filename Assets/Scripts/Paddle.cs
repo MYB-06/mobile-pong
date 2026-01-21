@@ -15,16 +15,18 @@ namespace PongGame.Gameplay
         [Header("Bounce Settings")]
         [SerializeField] private float maxBounceAngle;
         private Rigidbody2D _rigidbody2D;
+        private BoxCollider2D _boxCollider;
         private IInputProvider _inputProvider;
 
         private void Awake()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _inputProvider = GetComponent<IInputProvider>();
+            _boxCollider = GetComponent<BoxCollider2D>();
 
             if(_inputProvider == null)
             {
-            Debug.LogError($"[Paddle] IInputProvider is not found: {gameObject.name}");
+                Debug.LogError($"[Paddle] IInputProvider is not found: {gameObject.name}");
             }
         }
         private void FixedUpdate()
@@ -57,28 +59,26 @@ namespace PongGame.Gameplay
         private void HandleBallBounce(Collision2D collision, Ball ball)
         {
             ContactPoint2D contact = collision.GetContact(0);
-    
-            Bounds paddleBounds = GetComponent<BoxCollider2D>().bounds;
-            float paddleHeight = paddleBounds.size.y;
-            float paddleMinY = paddleBounds.min.y;
-            float paddleMaxY = paddleBounds.max.y;
-    
-            float contactY = Mathf.Clamp(contact.point.y, paddleMinY, paddleMaxY);
-            float hitOffset = contactY - transform.position.y;
+            Vector2 contactPoint = contact.point;
 
-            float normalizedHit = hitOffset / (paddleHeight / 2f);
+            float paddleWidth = _boxCollider.size.x;
+            float hitOffset = contactPoint.x - transform.position.x;
+            float normalizedHit = hitOffset / (paddleWidth * 0.5f);
             normalizedHit = Mathf.Clamp(normalizedHit, -1f, 1f);
-    
-            float bounceAngle = normalizedHit * maxBounceAngle;
-            float angleInRadians = bounceAngle * Mathf.Deg2Rad;
-            Vector2 direction = new Vector2(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
-    
-            Rigidbody2D ballRb = ball.GetComponent<Rigidbody2D>();
-            float ballIncomingDirectionX = ballRb.linearVelocity.x;
-            direction.x = ballIncomingDirectionX > 0 ? -Mathf.Abs(direction.x) : Mathf.Abs(direction.x);
-    
-            float ballSpeed = ballRb.linearVelocity.magnitude;
-            ballRb.linearVelocity = direction.normalized * ballSpeed;
+
+            float bounceAngle = normalizedHit * maxBounceAngle * Mathf.Deg2Rad;
+            float ballDirection = transform.position.y > 0 ? -1f : 1f;
+
+            Vector2 newDirection = new Vector2(Mathf.Sin(bounceAngle), ballDirection * Mathf.Cos(bounceAngle)).normalized;
+
+            float paddleMomentum = _rigidbody2D.linearVelocity.x * 1f;
+            Rigidbody2D ballRigidbody = ball.GetComponent<Rigidbody2D>();
+            float currentSpeed = ballRigidbody.linearVelocity.magnitude;
+
+            Vector2 finalVelocity = newDirection * currentSpeed;
+            finalVelocity.x += paddleMomentum;
+
+            ballRigidbody.linearVelocity = finalVelocity.normalized * currentSpeed;
         }
     }
 }
