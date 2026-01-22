@@ -63,6 +63,12 @@ namespace PongGame.Gameplay
             }
         }
         
+        public void ResetPosition()
+        {
+            transform.position = Vector3.zero;
+            _rigidbody2D.linearVelocity = Vector2.zero;
+            Launch();
+        }
         public Rigidbody2D Rigidbody => _rigidbody2D;
     }
 }
