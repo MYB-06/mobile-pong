@@ -1,0 +1,37 @@
+* text=auto eol=lf
+
+*.shader        linguist-vendored
+*.hlsl          linguist-vendored
+*.cginc         linguist-vendored
+*.compute       linguist-vendored
+
+*.shadergraph   linguist-vendored
+*.shadersubgraph linguist-vendored
+
+*.meta          linguist-generated
+*.unity         linguist-generated
+*.prefab        linguist-generated
+*.asset         linguist-generated
+*.mat           linguist-generated
+*.controller    linguist-generated
+*.anim          linguist-generated
+*.overrideController linguist-generated
+
+*.lighting      linguist-generated
+*.navmesh       linguist-generated
+*.terrainlayer  linguist-generated
+
+*.png           linguist-vendored
+*.jpg           linguist-vendored
+*.jpeg          linguist-vendored
+*.tga           linguist-vendored
+*.psd           linguist-vendored
+*.fbx           linguist-vendored
+*.wav           linguist-vendored
+*.mp3           linguist-vendored
+*.ogg           linguist-vendored
+
+Packages/**     linguist-vendored
+ProjectSettings/** linguist-vendored
+
+*.cs            linguist-language=C#
