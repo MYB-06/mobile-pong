@@ -31,6 +31,7 @@ namespace PongGame.UI
             AudioManager.Instance.SetMenuState(true);
             SetupButtons();
             UpdateIcon();
+            ConfigurePlatformUI();
         }
         private void SetupButtons()
         {
@@ -99,6 +100,19 @@ namespace PongGame.UI
         {
             bool musicEnabled = AudioManager.Instance.IsMusicEnabled();
             musicButtonImage.sprite = musicEnabled ? musicOnIcon : musicOffIcon;
+        }
+        private void ConfigurePlatformUI()
+        {
+            #if UNITY_ANDROID
+                keyboardButton.gameObject.SetActive(false);
+                mouseButton.gameObject.SetActive(false);
+
+                RectTransform soundRT = soundButton.GetComponent<RectTransform>();
+                RectTransform musicRT = musicButton.GetComponent<RectTransform>();
+
+                soundRT.anchoredPosition = new Vector2(soundRT.anchoredPosition.x, 0);
+                musicRT.anchoredPosition = new Vector2(musicRT.anchoredPosition.x, 0);
+            #endif
         }
     }
 }
