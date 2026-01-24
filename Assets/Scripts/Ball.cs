@@ -1,3 +1,4 @@
+using PongGame.Audio;
 using UnityEngine;
 
 namespace PongGame.Gameplay
@@ -43,6 +44,10 @@ namespace PongGame.Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if(!collision.gameObject.TryGetComponent<Paddle>(out _))
+            {
+                AudioManager.Instance.PlayWallHit();
+            }
             _currentSpeed = Mathf.Clamp(_currentSpeed + speedIncrease, initialSpeed, maxSpeed);
 
             PreventDeadlock();

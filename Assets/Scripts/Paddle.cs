@@ -1,4 +1,5 @@
 using System;
+using PongGame.Audio;
 using PongGame.Input;
 using UnityEngine;
 
@@ -77,6 +78,8 @@ namespace PongGame.Gameplay
             finalVelocity.x += paddleMomentum;
 
             ball.Rigidbody.linearVelocity = finalVelocity.normalized * currentSpeed;
+
+            AudioManager.Instance.PlayPaddleHit();
         }
     }
 }

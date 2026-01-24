@@ -1,3 +1,4 @@
+using PongGame.Audio;
 using PongGame.Gameplay;
 using TMPro;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace PongGame.Core
         public void OnPlayerScored()
         {
             _scoreManager.AddScore();
+            AudioManager.Instance.PlayGoalClip();
             ResetBall();
         }
         
@@ -40,6 +42,7 @@ namespace PongGame.Core
 
             // Game Over
 
+            AudioManager.Instance.PlayGameOver();
             Debug.Log($"Game Over! Final Score: {CurrentScore}");
         }
         public void RestartGame()
