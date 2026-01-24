@@ -21,6 +21,8 @@ namespace PongGame.Audio
         [SerializeField] private bool musicEnabled = true;
         [SerializeField] private bool sfxEnabled = true;
 
+        private bool _isInMenu = true;
+
         void Awake()
         {
             if (Instance != null && Instance != this)
@@ -43,10 +45,12 @@ namespace PongGame.Audio
         }
         public void PlayPaddleHit()
         {
+            if (_isInMenu) return;
             PlaySFX(paddleHitClip);
         }
         public void PlayWallHit()
         {
+            if (_isInMenu) return;
             PlaySFX(wallHitClip);
         }
         public void PlayButtonClick()
@@ -60,6 +64,10 @@ namespace PongGame.Audio
         public void PlayGameOver()
         {
             PlaySFX(gameOverClip);
+        }
+        public void SetMenuState(bool inMenu)
+        {
+            _isInMenu = inMenu;
         }
         private void PlaySFX(AudioClip clip)
         {
@@ -95,6 +103,15 @@ namespace PongGame.Audio
         {
             musicEnabled = PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
             sfxEnabled = PlayerPrefs.GetInt("SFXEnabled", 1) == 1;
+        }
+        public bool IsSFXEnabled()
+        {
+            return sfxEnabled;
+        }
+
+        public bool IsMusicEnabled()
+        {       
+            return musicEnabled;
         }
     }  
 }
