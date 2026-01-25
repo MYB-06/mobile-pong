@@ -1,6 +1,6 @@
 using PongGame.Audio;
 using PongGame.Core;
-using PongGame.Utilies;
+using PongGame.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;

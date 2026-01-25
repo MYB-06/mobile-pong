@@ -129,6 +129,18 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6467332819394549859, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
   m_PrefabInstance: {fileID: 9128267190752494150}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &51283196
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51283192}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &455133246
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,6 +478,7 @@ GameObject:
   - component: {fileID: 619325318}
   - component: {fileID: 619325320}
   - component: {fileID: 619325319}
+  - component: {fileID: 619325321}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -532,6 +545,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619325317}
   m_CullTransparentMesh: 1
+--- !u!225 &619325321
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619325317}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &625562921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,6 +1780,10 @@ MonoBehaviour:
   soundOffIcon: {fileID: 21300000, guid: a2127e26ffa84054e9ff8a0ed469ebdb, type: 3}
   musicOnIcon: {fileID: 21300000, guid: 4cfd8bebed3285942acf9dc629ca7645, type: 3}
   musicOffIcon: {fileID: 21300000, guid: 693dc4489191c6243b1c7d3a3a6c938e, type: 3}
+  panelAnimDuration: 0.5
+  buttonAnimDuration: 0.3
+  buttonPunchScale: 0.4
+  arrowMoveDuration: 0.5
 --- !u!1 &1220781786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,7 +1912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2751,6 +2780,7 @@ GameObject:
   - component: {fileID: 1943037473}
   - component: {fileID: 1943037475}
   - component: {fileID: 1943037474}
+  - component: {fileID: 1943037476}
   m_Layer: 5
   m_Name: DifficultyPanel
   m_TagString: Untagged
@@ -2821,6 +2851,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943037472}
   m_CullTransparentMesh: 1
+--- !u!225 &1943037476
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943037472}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &1958725918 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7364818835941222178, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
@@ -2927,7 +2969,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3038915474081833886, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 51283196}
   m_SourcePrefab: {fileID: 100100000, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
 --- !u!1001 &9160432311074394636
 PrefabInstance:

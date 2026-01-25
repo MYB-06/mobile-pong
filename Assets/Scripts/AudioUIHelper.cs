@@ -2,7 +2,7 @@ using PongGame.Audio;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PongGame.Utilies
+namespace PongGame.Utilities
 {
     public static class AudioUIHelper
     {

@@ -1,9 +1,11 @@
 using PongGame.Audio;
 using PongGame.Core;
-using PongGame.Utilies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
+using System.Collections.Generic;
+using PongGame.Utilities;
 
 namespace PongGame.UI
 {
@@ -36,14 +38,34 @@ namespace PongGame.UI
         [SerializeField] private Sprite soundOffIcon;
         [SerializeField] private Sprite musicOnIcon;
         [SerializeField] private Sprite musicOffIcon;
+        [Header("Animation Settings")]
+        [SerializeField] private float panelAnimDuration = 0.4f;
+        [SerializeField] private float buttonAnimDuration = 0.4f;
+        [SerializeField] private float buttonPunchScale = 0.1f;
+        [SerializeField] private float arrowMoveDuration = 0.3f;
+        
+        private Dictionary<GameObject, (CanvasGroup canvasGroup, RectTransform rectTransform)> _panelCache;
+        
         void Start()
         {
             AudioManager.Instance?.SetMenuState(true);
+            CachePanelComponents();
             SetupButtons();
             UpdateIcon();
             ConfigurePlatformUI();
             UpdateDifficultyArrows();
         }
+        
+        private void CachePanelComponents()
+        {
+            _panelCache = new Dictionary<GameObject, (CanvasGroup, RectTransform)>
+            {
+                { mainMenuPanel, (mainMenuPanel.GetComponent<CanvasGroup>(), mainMenuPanel.GetComponent<RectTransform>()) },
+                { settingsPanel, (settingsPanel.GetComponent<CanvasGroup>(), settingsPanel.GetComponent<RectTransform>()) },
+                { difficultyPanel, (difficultyPanel.GetComponent<CanvasGroup>(), difficultyPanel.GetComponent<RectTransform>()) }
+            };
+        }
+        
         private void SetupButtons()
         {
             playButton.onClick.AddListener(OnPlayClicked);
@@ -62,86 +84,102 @@ namespace PongGame.UI
             hardButton.onClick.AddListener(()=> OnDifficultySelected(Difficulty.Hard));
             difficultyBackButton.onClick.AddListener(OnDifficultyBackClicked);
         }
+        #region Button
         private void OnPlayClicked()
         {
+            AnimateButton(playButton);
             AudioManager.Instance?.PlayButtonClick();
-            mainMenuPanel.SetActive(false);
-            difficultyPanel.SetActive(true);
-            UpdateDifficultyArrows();
+            AnimatePanelTransition(mainMenuPanel, difficultyPanel);
         }
+        
         private void OnSettingsClicked()
         {
+            AnimateButton(settingsButton);
             AudioManager.Instance?.PlayButtonClick();
-            mainMenuPanel.SetActive(false);
-            settingsPanel.SetActive(true);
+            AnimatePanelTransition(mainMenuPanel, settingsPanel);
         }
+        
         private void OnSoundToggle()
         {
+            AnimateButton(soundButton);
             AudioManager.Instance?.PlayButtonClick();
             AudioManager.Instance?.ToggleSFX();
             UpdateIcon();
         }
+        
         private void OnMusicToggle()
         {
+            AnimateButton(musicButton);
             AudioManager.Instance?.PlayButtonClick();
             AudioManager.Instance?.ToggleMusic();
             UpdateIcon();
         }
+        
         private void OnKeyboardSelected()
         {
+            AnimateButton(keyboardButton);
             AudioManager.Instance?.PlayButtonClick();
             Debug.Log("Keyboard selected");
         }
+        
         private void OnMouseSelected()
         {
+            AnimateButton(mouseButton);
             AudioManager.Instance?.PlayButtonClick();
             Debug.Log("Mouse selected");
         }
+        
         private void OnBackClicked()
         {
+            AnimateButton(backButton);
             AudioManager.Instance?.PlayButtonClick();
-            settingsPanel.SetActive(false);
-            mainMenuPanel.SetActive(true);
+            AnimatePanelTransition(settingsPanel, mainMenuPanel);
         }
+        
         private void OnDifficultySelected(Difficulty difficulty)
         {
+            Button selectedButton = difficulty switch
+            {
+                Difficulty.Easy => easyButton,
+                Difficulty.Medium => mediumButton,
+                Difficulty.Hard => hardButton,
+                _ => mediumButton
+            };
+            
+            AnimateButton(selectedButton);
             AudioManager.Instance?.PlayButtonClick();
             DifficultySettings.SaveDifficulty(difficulty);
-            UpdateDifficultyArrows();
-
-            StartCountdown();
-        }
+            
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(UpdateDifficultyArrowsWithTween());
+            sequence.AppendCallback(StartCountdown);
+        }       
+        
         private void UpdateDifficultyArrows()
         {
-            Difficulty current = DifficultySettings.LoadDifficulty();
-
-            float yPos = current switch
-            {
-                Difficulty.Easy => 0f,
-                Difficulty.Medium => -150f,
-                Difficulty.Hard => -300f,
-                _ => -150f
-            };
-
-            Vector2 currentPos = difficultyArrows.anchoredPosition;
-            difficultyArrows.anchoredPosition = new Vector2(currentPos.x, yPos); 
+            UpdateDifficultyArrowsWithTween();
         }
+        
         private void StartCountdown()
         {
             AudioManager.Instance.SetMenuState(false);
             SceneManager.LoadScene("GameScene");
         }
+        
         private void OnDifficultyBackClicked()
         {
+            AnimateButton(difficultyBackButton);
             AudioManager.Instance?.PlayButtonClick();
-            difficultyPanel.SetActive(false);
-            mainMenuPanel.SetActive(true);
+            AnimatePanelTransition(difficultyPanel, mainMenuPanel);
         }
+        #endregion
+        
         private void UpdateIcon()
         {
             AudioUIHelper.UpdateSoundIcon(soundButtonImage, soundOnIcon, soundOffIcon);
             AudioUIHelper.UpdateMusicIcon(musicButtonImage, musicOnIcon, musicOffIcon);
-        }   
+        }      
+               
         private void ConfigurePlatformUI()
         {
             #if UNITY_ANDROID
@@ -155,6 +193,55 @@ namespace PongGame.UI
                 musicRT.anchoredPosition = new Vector2(musicRT.anchoredPosition.x, 0);
             #endif
         }
+
+        #region Animation
+        private void AnimatePanelTransition(GameObject fromPanel, GameObject toPanel)
+        {
+            Sequence sequence = DOTween.Sequence();
+            
+            var fromCache = _panelCache[fromPanel];
+            var toCache = _panelCache[toPanel];
+            
+            if (fromCache.canvasGroup != null)
+            {
+                sequence.Append(fromCache.canvasGroup.DOFade(0f, panelAnimDuration * 0.5f));
+            }
+            
+            sequence.AppendCallback(() =>
+            {
+                fromPanel.SetActive(false);
+                if (fromCache.canvasGroup != null) fromCache.canvasGroup.alpha = 1f;
+                
+                toPanel.SetActive(true);
+            });
+            
+            if (toCache.canvasGroup != null && toCache.rectTransform != null)
+            {
+                toCache.canvasGroup.alpha = 0f;
+                toCache.rectTransform.localScale = Vector3.zero;
+                
+                sequence.Append(toCache.canvasGroup.DOFade(1f, panelAnimDuration).SetEase(Ease.OutQuad));
+                sequence.Join(toCache.rectTransform.DOScale(1f, panelAnimDuration).SetEase(Ease.OutBack));
+            }
+        }
+        private void AnimateButton(Button button)
+        {
+            button.transform.DOPunchScale(Vector3.one * buttonPunchScale, buttonAnimDuration, 5);
+        }
+        private Tween UpdateDifficultyArrowsWithTween()
+        {
+            Difficulty current = DifficultySettings.LoadDifficulty();
+
+            float yPos = current switch
+            {
+                Difficulty.Easy => 0f,
+                Difficulty.Medium => -150f,
+                Difficulty.Hard => -300f,
+                _ => 0f
+            };
+
+            return difficultyArrows.DOAnchorPosY(yPos, arrowMoveDuration).SetEase(Ease.OutCubic);
+        }
+        #endregion
     }
 }
-
