@@ -28,7 +28,7 @@ namespace PongGame.UI
         [SerializeField] private Sprite musicOffIcon;
         void Start()
         {
-            AudioManager.Instance.SetMenuState(true);
+            AudioManager.Instance?.SetMenuState(true);
             SetupButtons();
             UpdateIcon();
             ConfigurePlatformUI();
@@ -48,41 +48,41 @@ namespace PongGame.UI
         }
         private void OnPlayClicked()
         {
-            AudioManager.Instance.PlayButtonClick();
-            AudioManager.Instance.SetMenuState(false);
+            AudioManager.Instance?.PlayButtonClick();
+            AudioManager.Instance?.SetMenuState(false);
             SceneManager.LoadScene("GameScene");
         }
         private void OnSettingsClicked()
         {
-            AudioManager.Instance.PlayButtonClick();
+            AudioManager.Instance?.PlayButtonClick();
             mainMenuPanel.SetActive(false);
             settingsPanel.SetActive(true);
         }
         private void OnSoundToggle()
         {
-            AudioManager.Instance.PlayButtonClick();
-            AudioManager.Instance.ToggleSFX();
+            AudioManager.Instance?.PlayButtonClick();
+            AudioManager.Instance?.ToggleSFX();
             UpdateIcon();
         }
         private void OnMusicToggle()
         {
-            AudioManager.Instance.PlayButtonClick();
-            AudioManager.Instance.ToggleMusic();
+            AudioManager.Instance?.PlayButtonClick();
+            AudioManager.Instance?.ToggleMusic();
             UpdateIcon();
         }
         private void OnKeyboardSelected()
         {
-            AudioManager.Instance.PlayButtonClick();
+            AudioManager.Instance?.PlayButtonClick();
             Debug.Log("Keyboard selected");
         }
         private void OnMouseSelected()
         {
-            AudioManager.Instance.PlayButtonClick();
+            AudioManager.Instance?.PlayButtonClick();
             Debug.Log("Mouse selected");
         }
         private void OnBackClicked()
         {
-            AudioManager.Instance.PlayButtonClick();
+            AudioManager.Instance?.PlayButtonClick();
             settingsPanel.SetActive(false);
             mainMenuPanel.SetActive(true);
         }

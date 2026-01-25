@@ -7,6 +7,7 @@ namespace PongGame.Core
     {
         public int CurrentScore {get; private set;}
         public int HighScore {get; private set;}
+        public bool IsNewHighScore{get; private set;}
         
         public ScoreManager()
         {
@@ -20,6 +21,7 @@ namespace PongGame.Core
         public void ResetScore()
         {
             CurrentScore = 0;
+            IsNewHighScore = false;
         }
 
         private void CheckAndSaveHighScore()
@@ -27,6 +29,7 @@ namespace PongGame.Core
             if (CurrentScore > HighScore)
             {
                 HighScore = CurrentScore;
+                IsNewHighScore = true;
                 SaveHighScore();
             }
         }
