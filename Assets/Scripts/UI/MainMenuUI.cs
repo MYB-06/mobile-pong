@@ -1,5 +1,6 @@
 using PongGame.Audio;
 using PongGame.Core;
+using PongGame.Utilies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -138,19 +139,9 @@ namespace PongGame.UI
         }
         private void UpdateIcon()
         {
-            UpdateMusicIcon();
-            UpdateSoundIcon();
-        }
-        private void UpdateSoundIcon()
-        {
-            bool sfxEnabled = AudioManager.Instance.IsSFXEnabled();
-            soundButtonImage.sprite = sfxEnabled ? soundOnIcon : soundOffIcon;
-        }
-        private void UpdateMusicIcon()
-        {
-            bool musicEnabled = AudioManager.Instance.IsMusicEnabled();
-            musicButtonImage.sprite = musicEnabled ? musicOnIcon : musicOffIcon;
-        }
+            AudioUIHelper.UpdateSoundIcon(soundButtonImage, soundOnIcon, soundOffIcon);
+            AudioUIHelper.UpdateMusicIcon(musicButtonImage, musicOnIcon, musicOffIcon);
+        }   
         private void ConfigurePlatformUI()
         {
             #if UNITY_ANDROID

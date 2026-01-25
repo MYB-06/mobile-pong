@@ -1,5 +1,6 @@
 using PongGame.Audio;
 using PongGame.Core;
+using PongGame.Utilies;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,8 +16,18 @@ namespace PongGame.UI
         [SerializeField] private Button pauseButton;
         [Header("Pause Panel")]
         [SerializeField] private GameObject pausePanel;
+        [SerializeField] private Button soundButton;
+        [SerializeField] private Button musicButton;
         [SerializeField] private Button resumeButton;
         [SerializeField] private Button mainMenuButton;
+        [Header("Button Icons")]
+        [SerializeField] private Image soundButtonImage;
+        [SerializeField] private Image musicButtonImage;
+        [Header("Icon Sprites")]
+        [SerializeField] private Sprite soundOnIcon;
+        [SerializeField] private Sprite soundOffIcon;
+        [SerializeField] private Sprite musicOnIcon;
+        [SerializeField] private Sprite musicOffIcon;
         [Header("Game Over Panel")]
         [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private TextMeshProUGUI finalScoreText;
@@ -28,11 +39,14 @@ namespace PongGame.UI
         {
             HidePanels();
             SetupButtons();
+            UpdateIcon();
         }
         private void SetupButtons()
         {
             pauseButton.onClick.AddListener(OnPauseClicked);
             
+            soundButton.onClick.AddListener(OnSoundToggle);
+            musicButton.onClick.AddListener(OnMusicToggle);
             resumeButton.onClick.AddListener(OnResumeClicked);
             mainMenuButton.onClick.AddListener(OnMainMenuClicked);
             
@@ -49,6 +63,18 @@ namespace PongGame.UI
             AudioManager.Instance?.PlayButtonClick();
             Time.timeScale = 0;
             pausePanel.SetActive(true);
+        }
+        private void OnSoundToggle()
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            AudioManager.Instance?.ToggleSFX();
+            UpdateIcon();
+        }
+        private void OnMusicToggle()
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            AudioManager.Instance?.ToggleMusic();
+            UpdateIcon();
         }
         private void OnResumeClicked()
         {
@@ -84,5 +110,10 @@ namespace PongGame.UI
             finalScoreText.text = $"Score: {finalScore}";
             gameOverHighScoreText.text = $"Best: {highScore}";
         }
+        private void UpdateIcon()
+        {
+            AudioUIHelper.UpdateSoundIcon(soundButtonImage, soundOnIcon, soundOffIcon);
+            AudioUIHelper.UpdateMusicIcon(musicButtonImage, musicOnIcon, musicOffIcon);
+        }   
     }  
 }
