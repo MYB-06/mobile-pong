@@ -1,4 +1,5 @@
 using PongGame.Audio;
+using PongGame.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ namespace PongGame.UI
         [Header("Panels")]
         [SerializeField] private GameObject mainMenuPanel;
         [SerializeField] private GameObject settingsPanel;
+        [SerializeField] private GameObject difficultyPanel;
         [Header("Buttons")]
         [SerializeField] private Button playButton;
         [SerializeField] private Button settingsButton;
@@ -18,6 +20,13 @@ namespace PongGame.UI
         [SerializeField] private Button keyboardButton;
         [SerializeField] private Button mouseButton;
         [SerializeField] private Button backButton;
+        [Header("Difficulty Buttons")]
+        [SerializeField] private Button easyButton;
+        [SerializeField] private Button mediumButton;
+        [SerializeField] private Button hardButton;
+        [SerializeField] private Button difficultyBackButton;
+        [Header("Difficulty Visual Feedback")]
+        [SerializeField] private RectTransform difficultyArrows;
         [Header("Button Icons")]
         [SerializeField] private Image soundButtonImage;
         [SerializeField] private Image musicButtonImage;
@@ -32,6 +41,7 @@ namespace PongGame.UI
             SetupButtons();
             UpdateIcon();
             ConfigurePlatformUI();
+            UpdateDifficultyArrows();
         }
         private void SetupButtons()
         {
@@ -45,12 +55,18 @@ namespace PongGame.UI
             mouseButton.onClick.AddListener(OnMouseSelected);
 
             backButton.onClick.AddListener(OnBackClicked);
+
+            easyButton.onClick.AddListener(()=> OnDifficultySelected(Difficulty.Easy));
+            mediumButton.onClick.AddListener(()=> OnDifficultySelected(Difficulty.Medium));
+            hardButton.onClick.AddListener(()=> OnDifficultySelected(Difficulty.Hard));
+            difficultyBackButton.onClick.AddListener(OnDifficultyBackClicked);
         }
         private void OnPlayClicked()
         {
             AudioManager.Instance?.PlayButtonClick();
-            AudioManager.Instance?.SetMenuState(false);
-            SceneManager.LoadScene("GameScene");
+            mainMenuPanel.SetActive(false);
+            difficultyPanel.SetActive(true);
+            UpdateDifficultyArrows();
         }
         private void OnSettingsClicked()
         {
@@ -84,6 +100,40 @@ namespace PongGame.UI
         {
             AudioManager.Instance?.PlayButtonClick();
             settingsPanel.SetActive(false);
+            mainMenuPanel.SetActive(true);
+        }
+        private void OnDifficultySelected(Difficulty difficulty)
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            DifficultySettings.SaveDifficulty(difficulty);
+            UpdateDifficultyArrows();
+
+            StartCountdown();
+        }
+        private void UpdateDifficultyArrows()
+        {
+            Difficulty current = DifficultySettings.LoadDifficulty();
+
+            float yPos = current switch
+            {
+                Difficulty.Easy => 0f,
+                Difficulty.Medium => -150f,
+                Difficulty.Hard => -300f,
+                _ => -150f
+            };
+
+            Vector2 currentPos = difficultyArrows.anchoredPosition;
+            difficultyArrows.anchoredPosition = new Vector2(currentPos.x, yPos); 
+        }
+        private void StartCountdown()
+        {
+            AudioManager.Instance.SetMenuState(false);
+            SceneManager.LoadScene("GameScene");
+        }
+        private void OnDifficultyBackClicked()
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            difficultyPanel.SetActive(false);
             mainMenuPanel.SetActive(true);
         }
         private void UpdateIcon()

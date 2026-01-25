@@ -1,3 +1,4 @@
+using PongGame.Core;
 using PongGame.Gameplay;
 using UnityEngine;
 
@@ -30,6 +31,12 @@ namespace PongGame.Input
         }
         private void Start()
         {
+            var settings = DifficultySettings.GetAISettings(DifficultySettings.LoadDifficulty());
+
+            reactionDelay = settings.reactionDelay;
+            reactionSpeed = settings.reactionSpeed;
+            smoothSpeed = settings.smoothSpeed;
+
             if (ballTransform != null && _ballRigidbody != null)
             {
                 _delayedBallPos = ballTransform.position;
