@@ -62,7 +62,7 @@ namespace PongGame.Gameplay
                 Sequence seq = DOTween.Sequence();
                 seq.Append(transform.DOScaleX(paddleScaleX, animDuration));
                 seq.Join(transform.DOScaleY(paddleScaleY, animDuration));   
-                seq.Append(transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutElastic));
+                seq.Append(transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutElastic)).SetLink(gameObject, LinkBehaviour.KillOnDestroy);
             }
         }
 
