@@ -12,11 +12,7 @@ namespace PongGame.Core
         [SerializeField] private float wallThickness = 0.5f;
         private void Start()
         {
-            if (GameBoundaries.Instance == null)
-            {
-                Debug.LogError("[WallManager] GameBoundaries instance not found!");
-                return;
-            }
+            if (GameBoundaries.Instance == null) return;
 
             SetupWalls();
         }

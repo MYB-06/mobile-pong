@@ -1,7 +1,6 @@
 using PongGame.Audio;
 using PongGame.Gameplay;
 using PongGame.UI;
-using TMPro;
 using UnityEngine;
 
 namespace PongGame.Core

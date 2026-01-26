@@ -119,14 +119,12 @@ namespace PongGame.UI
         {
             AnimateButton(keyboardButton);
             AudioManager.Instance?.PlayButtonClick();
-            Debug.Log("Keyboard selected");
         }
         
         private void OnMouseSelected()
         {
             AnimateButton(mouseButton);
             AudioManager.Instance?.PlayButtonClick();
-            Debug.Log("Mouse selected");
         }
         
         private void OnBackClicked()
