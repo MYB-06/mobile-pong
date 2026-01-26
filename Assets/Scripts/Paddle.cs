@@ -34,33 +34,32 @@ namespace PongGame.Gameplay
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _inputProvider = GetComponent<IInputProvider>();
             _boxCollider = GetComponent<BoxCollider2D>();
-
-            if(_inputProvider == null)
-            {
-                Debug.LogError($"[Paddle] IInputProvider is not found: {gameObject.name}");
-            }
         }
         void Start()
         {
-            if(GameBoundaries.Instance != null)
-            {
-                _minX = GameBoundaries.Instance.MinX;
-                _maxX = GameBoundaries.Instance.MaxX;
-
-                _paddleHalfWidth = _boxCollider.size.x / 2f;
-            }
-            else
-            {
-                Debug.LogError("[Paddle] GameBoundaries not found!");
-            }
-            _effectiveMinX = _minX + _paddleHalfWidth + safetyOffset;
-            _effectiveMaxX = _maxX - _paddleHalfWidth - safetyOffset;
+            InitializeBoundaries();
         }
         private void FixedUpdate()
         {
             Move();
         }
 
+        private void InitializeBoundaries()
+        {
+            if (GameBoundaries.Instance == null) return;
+
+            _minX = GameBoundaries.Instance.MinX;
+            _maxX = GameBoundaries.Instance.MaxX;
+
+            CalculateEffectiveBoundaries();
+        }
+
+        private void CalculateEffectiveBoundaries()
+        {
+            _paddleHalfWidth = _boxCollider.size.x / 2f;
+            _effectiveMinX = _minX + _paddleHalfWidth + safetyOffset;
+            _effectiveMaxX = _maxX - _paddleHalfWidth - safetyOffset;
+        }
         private void Move()
         {
             float input = _inputProvider.GetHorizontalInput();
