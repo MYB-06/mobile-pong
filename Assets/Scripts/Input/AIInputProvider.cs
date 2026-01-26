@@ -12,6 +12,7 @@ namespace PongGame.Input
         [SerializeField] private float reactionDelay;
         [SerializeField] private float smoothSpeed;
         [SerializeField] private bool usePrediction = true;
+        [SerializeField] private bool useDifficultySettings = true;
 
         [Header("Wall Settings")]
         [SerializeField] private float leftWall;
@@ -33,9 +34,13 @@ namespace PongGame.Input
         {
             var settings = DifficultySettings.GetAISettings(DifficultySettings.LoadDifficulty());
 
-            reactionDelay = settings.reactionDelay;
-            reactionSpeed = settings.reactionSpeed;
-            smoothSpeed = settings.smoothSpeed;
+            if (useDifficultySettings)
+            {
+                reactionDelay = settings.reactionDelay;
+                reactionSpeed = settings.reactionSpeed;
+                smoothSpeed = settings.smoothSpeed;
+            }
+
 
             if (ballTransform != null && _ballRigidbody != null)
             {

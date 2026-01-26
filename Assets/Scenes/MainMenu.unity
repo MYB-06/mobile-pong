@@ -1244,6 +1244,14 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
+      propertyPath: maxTrailWidth
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
+      propertyPath: minTrailWidth
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: speedIncrease
       value: 0
       objectReference: {fileID: 0}
@@ -2853,6 +2861,7 @@ MonoBehaviour:
   reactionDelay: 0
   smoothSpeed: 8
   usePrediction: 1
+  useDifficultySettings: 0
   leftWall: -2.8
   rightWall: 2.8
 --- !u!114 &2910166468428181828
@@ -2872,6 +2881,7 @@ MonoBehaviour:
   reactionDelay: 0
   smoothSpeed: 8
   usePrediction: 1
+  useDifficultySettings: 0
   leftWall: -2.8
   rightWall: 2.8
 --- !u!114 &5570602622957875080

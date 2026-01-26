@@ -200,13 +200,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Ball
   initialSpeed: 3
-  speedIncrease: 0.5
+  speedIncrease: 0.1
   maxSpeed: 13
   minBounceAngle: 40
   trail: {fileID: 2856480660604733317}
-  minSpeedForTrail: 5
+  minSpeedForTrail: 4
   minTrailWidth: 0.2
-  maxTrailWidth: 0.3
+  maxTrailWidth: 0.35
 --- !u!212 &4323861924940884818
 SpriteRenderer:
   serializedVersion: 2
