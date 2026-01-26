@@ -1,6 +1,6 @@
-using System;
 using DG.Tweening;
 using PongGame.Audio;
+using PongGame.Core;
 using PongGame.Input;
 using UnityEngine;
 
@@ -12,9 +12,7 @@ namespace PongGame.Gameplay
         [Header("Movement")]
         [SerializeField] private float speed;
         [Header("Boundaries")]
-        [SerializeField] private float minX = -2f;
-        [SerializeField] private float maxX = 2f;
-        [SerializeField] private float threshold = 0.05f;
+        [SerializeField] private float safetyOffset;
         [Header("Bounce Settings")]
         [SerializeField] private float maxBounceAngle;
         [SerializeField] private float momentumTransfer = 1f;
@@ -22,6 +20,11 @@ namespace PongGame.Gameplay
         [SerializeField] private float paddleScaleX;
         [SerializeField] private float paddleScaleY;
         [SerializeField] private float animDuration;
+        private float _paddleHalfWidth;
+        private float _minX;
+        private float _maxX;
+        private float _effectiveMinX;
+        private float _effectiveMaxX;
         private Rigidbody2D _rigidbody2D;
         private BoxCollider2D _boxCollider;
         private IInputProvider _inputProvider;
@@ -37,6 +40,22 @@ namespace PongGame.Gameplay
                 Debug.LogError($"[Paddle] IInputProvider is not found: {gameObject.name}");
             }
         }
+        void Start()
+        {
+            if(GameBoundaries.Instance != null)
+            {
+                _minX = GameBoundaries.Instance.MinX;
+                _maxX = GameBoundaries.Instance.MaxX;
+
+                _paddleHalfWidth = _boxCollider.size.x / 2f;
+            }
+            else
+            {
+                Debug.LogError("[Paddle] GameBoundaries not found!");
+            }
+            _effectiveMinX = _minX + _paddleHalfWidth + safetyOffset;
+            _effectiveMaxX = _maxX - _paddleHalfWidth - safetyOffset;
+        }
         private void FixedUpdate()
         {
             Move();
@@ -46,7 +65,7 @@ namespace PongGame.Gameplay
         {
             float input = _inputProvider.GetHorizontalInput();
             
-            if((transform.position.x <= minX + threshold && input < 0) || (transform.position.x >= maxX - threshold && input > 0))
+            if((transform.position.x <= _effectiveMinX && input < 0) || (transform.position.x >= _effectiveMaxX && input > 0))
             {
                 input = 0;
             }
