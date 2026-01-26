@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using PongGame.Audio;
 using PongGame.Input;
 using UnityEngine;
@@ -17,6 +18,10 @@ namespace PongGame.Gameplay
         [Header("Bounce Settings")]
         [SerializeField] private float maxBounceAngle;
         [SerializeField] private float momentumTransfer = 1f;
+        [Header("Animation Settings")]
+        [SerializeField] private float paddleScaleX;
+        [SerializeField] private float paddleScaleY;
+        [SerializeField] private float animDuration;
         private Rigidbody2D _rigidbody2D;
         private BoxCollider2D _boxCollider;
         private IInputProvider _inputProvider;
@@ -53,6 +58,11 @@ namespace PongGame.Gameplay
             if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))
             {
                 HandleBallBounce(collision, ball);
+
+                Sequence seq = DOTween.Sequence();
+                seq.Append(transform.DOScaleX(paddleScaleX, animDuration));
+                seq.Join(transform.DOScaleY(paddleScaleY, animDuration));   
+                seq.Append(transform.DOScale(Vector3.one, 0.25f).SetEase(Ease.OutElastic));
             }
         }
 

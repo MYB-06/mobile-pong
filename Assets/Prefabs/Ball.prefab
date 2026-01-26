@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1cecfb0a8507149abbde678e14911c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Gameplay.Ball
-  initialSpeed: 3
+  initialSpeed: 4
   speedIncrease: 0.1
   maxSpeed: 13
   minBounceAngle: 40

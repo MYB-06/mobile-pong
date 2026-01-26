@@ -53,6 +53,7 @@ MonoBehaviour:
   reactionDelay: 1
   smoothSpeed: 8
   usePrediction: 1
+  useDifficultySettings: 1
   leftWall: -2.8
   rightWall: 2.8
 --- !u!114 &5570602623448597954
@@ -73,6 +74,9 @@ MonoBehaviour:
   threshold: 0.05
   maxBounceAngle: 60
   momentumTransfer: 1
+  paddleScaleX: 0.8
+  paddleScaleY: 1.1
+  animDuration: 0.15
 --- !u!212 &7258095526628125343
 SpriteRenderer:
   serializedVersion: 2
