@@ -13,7 +13,11 @@ namespace PongGame.Gameplay
 
         [Header("Deadlock Prevention")]
         [SerializeField] private float minBounceAngle = 30f;
-
+        [Header("Trail Settings")]
+        [SerializeField] private TrailRenderer trail;
+        [SerializeField] private float minSpeedForTrail;
+        [SerializeField] private float minTrailWidth;
+        [SerializeField] private float maxTrailWidth;
         private Rigidbody2D _rigidbody2D;
         private float _currentSpeed;
 
@@ -24,11 +28,13 @@ namespace PongGame.Gameplay
 
         private void Start()
         {
+            if(trail != null) trail.emitting = false;
             Launch();
         }
         private void FixedUpdate()
         {
             _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _currentSpeed;
+            UpdateTrail();
         }
 
         private void Launch()
@@ -44,7 +50,11 @@ namespace PongGame.Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if(!collision.gameObject.TryGetComponent<Paddle>(out _))
+            if(collision.gameObject.TryGetComponent<Paddle>(out _))
+            {
+                if(trail != null) trail.Clear();
+            }
+            else
             {
                 AudioManager.Instance.PlayWallHit();
             }
@@ -72,7 +82,30 @@ namespace PongGame.Gameplay
         {
             transform.position = Vector3.zero;
             _rigidbody2D.linearVelocity = Vector2.zero;
+
+            if (trail != null)
+            {
+                trail.Clear();
+                trail.emitting = false;
+            }
+
             Launch();
+        }
+        private void UpdateTrail()
+        {
+            if (trail == null) return;
+
+            if (_currentSpeed >= minSpeedForTrail)
+            {
+                trail.emitting = true;
+
+                float speedNormalized = Mathf.InverseLerp(initialSpeed, maxSpeed, _currentSpeed);
+                trail.widthMultiplier = Mathf.Lerp(minTrailWidth,maxTrailWidth,speedNormalized);
+            }
+            else
+            {
+                trail.emitting = false;
+            }
         }
         public Rigidbody2D Rigidbody => _rigidbody2D;
     }

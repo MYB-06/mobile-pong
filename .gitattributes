@@ -1,12 +1,8 @@
 * text=auto eol=lf
 
-*.shader        linguist-vendored
-*.hlsl          linguist-vendored
 *.cginc         linguist-vendored
 *.compute       linguist-vendored
 
-*.shadergraph   linguist-vendored
-*.shadersubgraph linguist-vendored
 
 *.meta          linguist-generated
 *.unity         linguist-generated
