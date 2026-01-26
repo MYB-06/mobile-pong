@@ -13,12 +13,15 @@ namespace PongGame.Input
         [SerializeField] private float smoothSpeed;
         [SerializeField] private bool usePrediction = true;
         [SerializeField] private bool useDifficultySettings = true;
-
-        [Header("Wall Settings")]
-        [SerializeField] private float leftWall;
-        [SerializeField] private float rightWall;
+        [Header("Movement Settings")]
+        [SerializeField] private float safetyOffset;
 
         private Rigidbody2D _ballRigidbody;
+
+        private float _effectiveLeftWall;
+        private float _effectiveRightWall;
+        private float _leftWall;
+        private float _rightWall;
 
         private float _targetX;
         private float _currentInput;
@@ -32,21 +35,9 @@ namespace PongGame.Input
         }
         private void Start()
         {
-            var settings = DifficultySettings.GetAISettings(DifficultySettings.LoadDifficulty());
-
-            if (useDifficultySettings)
-            {
-                reactionDelay = settings.reactionDelay;
-                reactionSpeed = settings.reactionSpeed;
-                smoothSpeed = settings.smoothSpeed;
-            }
-
-
-            if (ballTransform != null && _ballRigidbody != null)
-            {
-                _delayedBallPos = ballTransform.position;
-                _delayedBallVel = _ballRigidbody.linearVelocity;
-            }
+            InitializeDifficultySettings();
+            InitializeBoundaries();
+            InitializeBallTracking();
         }
         private void Update()
         {
@@ -55,6 +46,59 @@ namespace PongGame.Input
             UpdateDelayedBallData();
             CalculateTargetPosition();
             SmoothInput();          
+        }
+        private void InitializeDifficultySettings()
+        {
+            if (!useDifficultySettings) return;
+
+            var settings = DifficultySettings.GetAISettings(DifficultySettings.LoadDifficulty());
+            reactionDelay = settings.reactionDelay;
+            reactionSpeed = settings.reactionSpeed;
+            smoothSpeed = settings.smoothSpeed;
+        }
+
+        private void InitializeBallTracking()
+        {
+            if (ballTransform == null || _ballRigidbody == null) return;
+    
+            _delayedBallPos = ballTransform.position;
+            _delayedBallVel = _ballRigidbody.linearVelocity;
+        }
+        private void InitializeBoundaries()
+        {
+            if (GameBoundaries.Instance == null)
+            {
+                SetFallbackBoundaries();
+                return;
+            }
+
+            _leftWall = GameBoundaries.Instance.MinX;
+            _rightWall = GameBoundaries.Instance.MaxX;
+
+            CalculateEffectiveBoundaries();
+        }
+        private void CalculateEffectiveBoundaries()
+        {
+            BoxCollider2D collider = GetComponent<BoxCollider2D>();
+    
+            if (collider == null)
+            {
+                _effectiveLeftWall = _leftWall;
+                _effectiveRightWall = _rightWall;
+                return;
+            }
+
+            float paddleHalfWidth = collider.size.x / 2f;
+            _effectiveLeftWall = _leftWall + paddleHalfWidth + safetyOffset;
+            _effectiveRightWall = _rightWall - paddleHalfWidth - safetyOffset;
+        }
+
+        private void SetFallbackBoundaries()
+        {
+            _leftWall = -3f;
+            _rightWall = 3f;
+            _effectiveLeftWall = -2.5f;
+            _effectiveRightWall = 2.5f;
         }
         public float GetHorizontalInput()
         {
@@ -110,7 +154,7 @@ namespace PongGame.Input
                 predictedX = ballPos.x;
             }
       
-            _targetX = predictedX;
+            _targetX = Mathf.Clamp(predictedX, _effectiveLeftWall, _effectiveRightWall);
         }
         private float PredictBallPositionWithBounce(Vector2 ballPos, Vector2 ballVel)
         {
@@ -124,12 +168,12 @@ namespace PongGame.Input
                 float timeToReachY = Mathf.Abs((targetY - currentPos.y) / currentVel.y);
                 float predictedX = currentPos.x + (currentVel.x * timeToReachY);
 
-                if(predictedX >= leftWall && predictedX <= rightWall)
+                if(predictedX >= _leftWall && predictedX <= _rightWall)
                 {
                     return predictedX;
                 }
 
-                float wallX = predictedX > rightWall ? rightWall : leftWall;
+                float wallX = predictedX > _rightWall ? _rightWall : _leftWall;
                 float timeToWall = Mathf.Abs((wallX - currentPos.x) / currentVel.x);
 
                 Vector2 hitPoint = new Vector2(wallX, currentPos.y + (currentVel.y * timeToWall));
