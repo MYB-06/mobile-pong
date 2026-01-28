@@ -7,14 +7,14 @@ namespace PongGame.Core
     {
         private const string DIFFICULTY_KEY = "GameDifficulty";
 
-        public static (float reactionDelay, float reactionSpeed, float smoothSpeed) GetAISettings(Difficulty difficulty)
+        public static (float reactionSpeed, float smoothSpeed, float predictionAccuracy) GetAISettings(Difficulty difficulty)
         {
             return difficulty switch 
             {
-                Difficulty.Easy => (1f, 0.4f, 5f),
-                Difficulty.Medium => (0.4f, 0.6f, 7f),
-                Difficulty.Hard => (0.1f, 1f, 10f),
-                _ => (0.2f, 0.8f, 7f) 
+                Difficulty.Easy => (0.5f, 5f, 0.3f),
+                Difficulty.Medium => (0.7f, 5f, 0.5f),
+                Difficulty.Hard => (1f, 7f, 0.7f),
+                _ => (0.7f, 5f, 0.5f) 
             };
         }
         public static void SaveDifficulty(Difficulty difficulty)

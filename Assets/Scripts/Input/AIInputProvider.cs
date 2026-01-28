@@ -9,8 +9,8 @@ namespace PongGame.Input
         [Header("AI Settings")]
         [SerializeField] private Transform ballTransform;
         [SerializeField] private float reactionSpeed;
-        [SerializeField] private float reactionDelay;
         [SerializeField] private float smoothSpeed;
+        [SerializeField] private float predictionAccuracy;
         [SerializeField] private bool usePrediction = true;
         [SerializeField] private bool useDifficultySettings = true;
         [Header("Movement Settings")]
@@ -43,7 +43,6 @@ namespace PongGame.Input
         {
             if (ballTransform == null) return;
 
-            UpdateDelayedBallData();
             CalculateTargetPosition();
             SmoothInput();          
         }
@@ -52,9 +51,9 @@ namespace PongGame.Input
             if (!useDifficultySettings) return;
 
             var settings = DifficultySettings.GetAISettings(DifficultySettings.LoadDifficulty());
-            reactionDelay = settings.reactionDelay;
             reactionSpeed = settings.reactionSpeed;
             smoothSpeed = settings.smoothSpeed;
+            predictionAccuracy = settings.predictionAccuracy;
         }
 
         private void InitializeBallTracking()
@@ -137,8 +136,8 @@ namespace PongGame.Input
         {
             if (ballTransform == null) return;
 
-            Vector2 ballPos = _delayedBallPos;
-            Vector2 ballVelocity = _delayedBallVel;
+            Vector2 ballPos = ballTransform.position;
+            Vector2 ballVelocity = _ballRigidbody.linearVelocity;
 
             float predictedX;
 
@@ -150,7 +149,10 @@ namespace PongGame.Input
 
                 if (ballComing)
                 {
-                    predictedX = PredictBallPositionWithBounce(ballPos, ballVelocity);
+                    float perfectPrediction = PredictBallPositionWithBounce(ballPos, ballVelocity);
+
+                    float inaccuratePrediction = ballPos.x;
+                    predictedX = Mathf.Lerp(inaccuratePrediction, perfectPrediction, predictionAccuracy);
                 }
                 else
                 {
@@ -191,18 +193,6 @@ namespace PongGame.Input
                 currentPos = hitPoint;
             }
             return ballPos.x;
-        }
-        private void UpdateDelayedBallData()
-        {
-            _delayTimer += Time.deltaTime;
-
-            if(_delayTimer >= reactionDelay)
-            {
-                _delayedBallPos = ballTransform.position;
-                _delayedBallVel = _ballRigidbody.linearVelocity;
-
-                _delayTimer = 0f;
-            }
         }
     }
 }
