@@ -25,9 +25,6 @@ namespace PongGame.Input
 
         private float _targetX;
         private float _currentInput;
-        private Vector2 _delayedBallPos;
-        private Vector2 _delayedBallVel;
-        private float _delayTimer;
 
         private void Awake()
         {
@@ -37,7 +34,6 @@ namespace PongGame.Input
         {
             InitializeDifficultySettings();
             InitializeBoundaries();
-            InitializeBallTracking();
         }
         private void Update()
         {
@@ -54,14 +50,6 @@ namespace PongGame.Input
             reactionSpeed = settings.reactionSpeed;
             smoothSpeed = settings.smoothSpeed;
             predictionAccuracy = settings.predictionAccuracy;
-        }
-
-        private void InitializeBallTracking()
-        {
-            if (ballTransform == null || _ballRigidbody == null) return;
-    
-            _delayedBallPos = ballTransform.position;
-            _delayedBallVel = _ballRigidbody.linearVelocity;
         }
         private void InitializeBoundaries()
         {
