@@ -173,9 +173,20 @@ namespace PongGame.Input
             Vector2 currentPos = ballPos;
             Vector2 currentVel = ballVel;
 
+             if(Mathf.Abs(currentVel.y) < 0.01f)
+            {
+                return currentPos.x;
+            }
+
             for (int i = 0; i < 3; i++)
             {
-                float timeToReachY = Mathf.Abs((targetY - currentPos.y) / currentVel.y);
+                float timeToReachY =(targetY - currentPos.y) / currentVel.y;
+
+                if(timeToReachY < 0 || timeToReachY > 10f)
+                {
+                    return currentPos.x;
+                }
+
                 float predictedX = currentPos.x + (currentVel.x * timeToReachY);
 
                 if(predictedX >= _leftWall && predictedX <= _rightWall)
