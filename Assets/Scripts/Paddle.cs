@@ -62,15 +62,37 @@ namespace PongGame.Gameplay
         }
         private void Move()
         {
+            InputType inputType = _inputProvider.GetInputType();
+
+            if(inputType == InputType.Touch)
+            {
+                MoveTouchBased();   
+            }
+            else
+            {
+                MoveVelocityBased();
+            }     
+        }
+        private void MoveTouchBased()
+        {
+            float targetX = _inputProvider.GetTargetXPosition();
+            float clampedX = Mathf.Clamp(targetX, _effectiveMinX, _effectiveMaxX);
+
+            Vector2 targetPos = new Vector2(clampedX, transform.position.y);
+            _rigidbody2D.MovePosition(targetPos);
+        }
+        private void MoveVelocityBased()
+        {
             float input = _inputProvider.GetHorizontalInput();
             
-            if((transform.position.x <= _effectiveMinX && input < 0) || (transform.position.x >= _effectiveMaxX && input > 0))
+            if((transform.position.x <= _effectiveMinX && input < 0) || 
+               (transform.position.x >= _effectiveMaxX && input > 0))
             {
                 input = 0;
             }
 
-            _rigidbody2D.linearVelocity = new Vector2(input * speed, 0f);           
-        }  
+            _rigidbody2D.linearVelocity = new Vector2(input * speed, 0f);
+        } 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.TryGetComponent<Ball>(out Ball ball))

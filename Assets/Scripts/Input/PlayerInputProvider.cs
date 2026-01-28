@@ -5,29 +5,57 @@ namespace PongGame.Input
 {
     public class PlayerInputProvider : MonoBehaviour, IInputProvider
     {
-        [SerializeField] private float touchSensitivity;
         private PlayerInputActions _inputActions;
-        private Vector2 _moveInput;
+        private Camera _mainCamera;
+        private float _lastValidWorldX;
+        private bool _isTouching;
 
         private void Awake()
         {
             _inputActions = new PlayerInputActions();
-            _inputActions.Player.Move.performed += OnMovePerformed;
-            _inputActions.Player.Move.canceled += OnMoveCanceled;
+            _mainCamera = Camera.main;
+
+            _inputActions.Player.Move.performed += OnInputPerformed;
+            _inputActions.Player.Move.canceled += OnInputCanceled;
+        }
+        void Start()
+        {
+            _lastValidWorldX = transform.position.x;
         }
 
+        public InputType GetInputType()
+        {
+            return _isTouching ? InputType.Touch : InputType.Keyboard;
+        }
         public float GetHorizontalInput()
         {
-            return _moveInput.x;
+            if (!_isTouching)
+            {
+                return _inputActions.Player.Move.ReadValue<Vector2>().x;
+            }
+            return 0f;
         }
-        private void OnMovePerformed(InputAction.CallbackContext ctx)
+        public float GetTargetXPosition()
         {
-            Vector2 rawInput = ctx.ReadValue<Vector2>();
-            _moveInput.x = Mathf.Clamp(rawInput.x * touchSensitivity, -1f, 1f);
+           return _lastValidWorldX;
         }
-        private void OnMoveCanceled(InputAction.CallbackContext ctx)
+        private void OnInputPerformed(InputAction.CallbackContext ctx)
         {
-            _moveInput = Vector2.zero;
+            Vector2 inputValue = ctx.ReadValue<Vector2>();
+
+            if(inputValue.magnitude > 10f)
+            {
+                _isTouching = true;
+
+                Vector3 worldPos = _mainCamera.ScreenToWorldPoint(new Vector3(inputValue.x, inputValue.y, _mainCamera.nearClipPlane));
+
+                _lastValidWorldX = worldPos.x;
+            }
+            else _isTouching = false;
+        }
+        private void OnInputCanceled(InputAction.CallbackContext ctx)
+        {
+            _isTouching = false;
         }
         private void OnEnable()
         {
@@ -39,8 +67,8 @@ namespace PongGame.Input
         }
         private void OnDestroy()
         {
-            _inputActions.Player.Move.performed -= OnMovePerformed;
-            _inputActions.Player.Move.canceled -= OnMoveCanceled;
+            _inputActions.Player.Move.performed -= OnInputPerformed;
+            _inputActions.Player.Move.canceled -= OnInputCanceled;
         }
     }
 }

@@ -100,9 +100,17 @@ namespace PongGame.Input
             _effectiveLeftWall = -2.5f;
             _effectiveRightWall = 2.5f;
         }
+        public InputType GetInputType()
+        {
+            return InputType.AI;
+        }
         public float GetHorizontalInput()
         {
             return _currentInput;
+        }
+        public float GetTargetXPosition()
+        {
+            return transform.position.x;
         }
         private void SmoothInput()
         {
