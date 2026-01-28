@@ -205,8 +205,8 @@ MonoBehaviour:
   minBounceAngle: 40
   trail: {fileID: 2856480660604733317}
   minSpeedForTrail: 4
-  minTrailWidth: 0.2
-  maxTrailWidth: 0.35
+  minTrailWidth: 0.3
+  maxTrailWidth: 0.5
 --- !u!212 &4323861924940884818
 SpriteRenderer:
   serializedVersion: 2

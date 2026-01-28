@@ -2282,7 +2282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af27cda35d71a2a4e965a5e0d2bed2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PongGame.Input.PlayerInputProvider
-  touchSensitivity: 1
 --- !u!114 &1755292424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3606,6 +3605,18 @@ PrefabInstance:
     - target: {fileID: 574439876878859724, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
+      propertyPath: initialSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
+      propertyPath: maxTrailWidth
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
+      propertyPath: minTrailWidth
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: speedIncrease
