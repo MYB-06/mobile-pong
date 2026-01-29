@@ -11,7 +11,7 @@ namespace PongGame.Core
         {
             return difficulty switch 
             {
-                Difficulty.Easy => (0.5f, 5f, 0.3f),
+                Difficulty.Easy => (0.5f, 5f, 0.4f),
                 Difficulty.Medium => (0.7f, 5f, 0.5f),
                 Difficulty.Hard => (1f, 7f, 0.7f),
                 _ => (0.7f, 5f, 0.5f) 
