@@ -20,8 +20,6 @@ namespace PongGame.UI
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button soundButton;
         [SerializeField] private Button musicButton;
-        [SerializeField] private Button keyboardButton;
-        [SerializeField] private Button mouseButton;
         [SerializeField] private Button backButton;
         [Header("Difficulty Buttons")]
         [SerializeField] private Button easyButton;
@@ -52,7 +50,6 @@ namespace PongGame.UI
             CachePanelComponents();
             SetupButtons();
             UpdateIcon();
-            ConfigurePlatformUI();
             UpdateDifficultyArrows();
         }
         
@@ -73,9 +70,6 @@ namespace PongGame.UI
 
             soundButton.onClick.AddListener(OnSoundToggle);
             musicButton.onClick.AddListener(OnMusicToggle);
-
-            keyboardButton.onClick.AddListener(OnKeyboardSelected);
-            mouseButton.onClick.AddListener(OnMouseSelected);
 
             backButton.onClick.AddListener(OnBackClicked);
 
@@ -113,18 +107,6 @@ namespace PongGame.UI
             AudioManager.Instance?.PlayButtonClick();
             AudioManager.Instance?.ToggleMusic();
             UpdateIcon();
-        }
-        
-        private void OnKeyboardSelected()
-        {
-            AnimateButton(keyboardButton);
-            AudioManager.Instance?.PlayButtonClick();
-        }
-        
-        private void OnMouseSelected()
-        {
-            AnimateButton(mouseButton);
-            AudioManager.Instance?.PlayButtonClick();
         }
         
         private void OnBackClicked()
@@ -177,20 +159,6 @@ namespace PongGame.UI
             AudioUIHelper.UpdateSoundIcon(soundButtonImage, soundOnIcon, soundOffIcon);
             AudioUIHelper.UpdateMusicIcon(musicButtonImage, musicOnIcon, musicOffIcon);
         }      
-               
-        private void ConfigurePlatformUI()
-        {
-            #if UNITY_ANDROID
-                keyboardButton.gameObject.SetActive(false);
-                mouseButton.gameObject.SetActive(false);
-
-                RectTransform soundRT = soundButton.GetComponent<RectTransform>();
-                RectTransform musicRT = musicButton.GetComponent<RectTransform>();
-
-                soundRT.anchoredPosition = new Vector2(soundRT.anchoredPosition.x, 0);
-                musicRT.anchoredPosition = new Vector2(musicRT.anchoredPosition.x, 0);
-            #endif
-        }
 
         #region Animation
         private void AnimatePanelTransition(GameObject fromPanel, GameObject toPanel)

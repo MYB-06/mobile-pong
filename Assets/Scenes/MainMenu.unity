@@ -1933,8 +1933,6 @@ MonoBehaviour:
   settingsButton: {fileID: 815831217}
   soundButton: {fileID: 1024024488}
   musicButton: {fileID: 1153331504}
-  keyboardButton: {fileID: 1958725918}
-  mouseButton: {fileID: 1777776270}
   backButton: {fileID: 746616948}
   easyButton: {fileID: 794272056}
   mediumButton: {fileID: 1449200164}
@@ -2790,17 +2788,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 248fd5a1b11ca2c4b96069cc2f171ab1, type: 3}
---- !u!114 &1777776270 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1925482870562074170, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
-  m_PrefabInstance: {fileID: 9128267190752494150}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1 &1943037472
 GameObject:
   m_ObjectHideFlags: 0
@@ -2895,17 +2882,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &1958725918 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7364818835941222178, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
-  m_PrefabInstance: {fileID: 9128267190752494150}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &2563326355124992256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3060,7 +3036,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6670473490588256109, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
+    - {fileID: 3680022016305768808, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3038915474081833886, guid: 8ac7766b9e7cf4544b3840000a5804b9, type: 3}
