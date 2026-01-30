@@ -49,6 +49,7 @@ namespace PongGame.UI
         private CanvasGroup _gameOverGroup;
         private RectTransform _pauseRect;
         private RectTransform _gameOverRect;
+        private bool _isGameOver;
         void Start()
         {
             CachePanelComponents();
@@ -56,6 +57,8 @@ namespace PongGame.UI
             SetupButtons();
             UpdateIcon();
             InitializeFade();
+
+            _isGameOver = false;
         }
         private void CachePanelComponents()
         {
@@ -93,11 +96,18 @@ namespace PongGame.UI
         #region Button
         private void OnPauseClicked()
         {
-            AnimateButton(pauseButton);
-            AudioManager.Instance?.PlayButtonClick();
-            Time.timeScale = 0;
-            pausePanel.SetActive(true);
-            AnimatePanel(_pauseGroup, _pauseRect, true);
+            if (!_isGameOver)
+            {
+                AnimateButton(pauseButton);
+                AudioManager.Instance?.PlayButtonClick();
+                Time.timeScale = 0;
+                pausePanel.SetActive(true);
+                AnimatePanel(_pauseGroup, _pauseRect, true);
+            }
+            else
+            {
+                AudioManager.Instance?.PlayButtonClick();
+            }     
         }
         private void OnSoundToggle()
         {
@@ -133,6 +143,7 @@ namespace PongGame.UI
         {
             AnimateButton(mainMenuButton);
             AudioManager.Instance?.PlayButtonClick();
+            _isGameOver = false;
             
             LoadMainMenuWithFade();
         }
@@ -140,6 +151,7 @@ namespace PongGame.UI
         {
             AnimateButton(gameOverMainMenuButton);
             AudioManager.Instance?.PlayButtonClick();
+            _isGameOver = false;
             
             LoadMainMenuWithFade();
         }
@@ -168,6 +180,7 @@ namespace PongGame.UI
         public void ShowGameOver(int finalScore, int highScore, bool isNewRecord)
         {
             gameOverPanel.SetActive(true);
+            _isGameOver = true;
 
             titleText.text = isNewRecord ? "New Record!" : "Game Over!";
             titleText.color = isNewRecord ? Color.orange : Color.white;
