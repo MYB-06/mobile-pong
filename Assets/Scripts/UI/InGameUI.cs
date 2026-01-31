@@ -159,6 +159,7 @@ namespace PongGame.UI
         {
             AnimateButton(retryButton);
             AudioManager.Instance?.PlayButtonClick();
+            _isGameOver = false;
 
             Sequence sequence = DOTween.Sequence();
             sequence.SetUpdate(true);

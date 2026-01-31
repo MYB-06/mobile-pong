@@ -1471,7 +1471,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 150, y: 100}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &828408210
@@ -1685,7 +1685,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -100, y: 100}
+  m_AnchoredPosition: {x: -150, y: 100}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &922028111
@@ -3608,7 +3608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: initialSpeed
-      value: 4
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: maxTrailWidth
@@ -3624,7 +3624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4988950302081737938, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: minSpeedForTrail
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8434912247327860663, guid: 4961114c0422ce54cb516a402d765a43, type: 3}
       propertyPath: m_Name
@@ -3663,6 +3663,10 @@ PrefabInstance:
       propertyPath: m_Volume
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2268689963486099287, guid: 248fd5a1b11ca2c4b96069cc2f171ab1, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 89f935015cc98724a862a586326fdf21, type: 3}
     - target: {fileID: 6697218213742707921, guid: 248fd5a1b11ca2c4b96069cc2f171ab1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
