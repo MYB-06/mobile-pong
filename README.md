@@ -93,13 +93,11 @@ Just visit **[itch.io](https://myb-06.itch.io/endless-pong)** and play in your b
 This project uses assets from the following creators:
 
 ### Art Assets
-- **[Kenney]** - Paddle sprites ([https://kenney.nl/assets/puzzle-pack])
-- **[Prinbles]** - UI sprites ([https://prinbles.itch.io/yet-another-icons])
+- **[Kenney]** - Paddle sprites (https://kenney.nl/assets/puzzle-pack)
+- **[Prinbles]** - UI sprites (https://prinbles.itch.io/yet-another-icons)
 
 ### Tools & Libraries
 - **DOTween** by Demigiant - [Asset Store](http://dotween.demigiant.com/)
-
-*If you created any of the assets used in this project and are not credited, please contact me!*
 
 
 ## 📄 License
